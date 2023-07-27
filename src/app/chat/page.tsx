@@ -2,23 +2,33 @@
 import React, { useState } from 'react';
 import UserList from './components/UserList';
 import ChatWindow from './components/ChatWindow';
-import './style.css'
+import './style.css';
 
-const users = [
+interface User {
+  id: number;
+  name: string;
+}
+
+const users: User[] = [
   { id: 1, name: 'User 1' },
   { id: 2, name: 'User 2' },
 ];
 
-const initialMessages = [
+interface Message {
+  sender: string;
+  content: string;
+}
+
+const initialMessages: Message[] = [
   { sender: 'User 1', content: 'Hello!' },
   { sender: 'User 2', content: 'Hi!' },
 ];
 
-const HomePage = () => {
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [messages, setMessages] = useState(initialMessages);
+const HomePage: React.FC = () => {
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
 
-  const handleUserSelect = user => {
+  const handleUserSelect = (user: User) => {
     setSelectedUser(user);
   };
 

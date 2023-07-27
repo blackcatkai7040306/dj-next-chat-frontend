@@ -1,11 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent, KeyboardEvent } from "react";
 
-const ChatWindow = ({ messages }) => {
+interface Message {
+  sender: string;
+  content: string;
+}
+
+interface ChatWindowProps {
+  messages: Message[];
+}
+
+const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
   const [newMessage, setNewMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState(messages);
-  const chatWindowRef = useRef(null);
+  const [chatMessages, setChatMessages] = useState<Message[]>(messages);
+  const chatWindowRef = useRef<HTMLDivElement>(null);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewMessage(event.target.value);
   };
 
@@ -20,14 +29,16 @@ const ChatWindow = ({ messages }) => {
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSendMessage();
     }
   };
 
   useEffect(() => {
-    chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
   }, [chatMessages]);
 
   return (
@@ -36,9 +47,7 @@ const ChatWindow = ({ messages }) => {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`message ${
-              message.sender === "User 1" ? "sent" : "received"
-            }`}
+            className={`message ${message.sender === "User 1" ? "sent" : "received"}`}
           >
             <div className="message-content">{message.content}</div>
           </div>
