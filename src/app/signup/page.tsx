@@ -13,11 +13,33 @@ const Signup = () => {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Add your sign-up logic here
     console.log("Username:", username);
     console.log("Password:", password);
+
+    try {
+      const response = await fetch("http://localhost:8000/v1/auth/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const token = data.token;
+        localStorage.setItem("token", token);
+        console.log("Sign up successful");
+      } else {
+        // API call failed
+        console.error("Sign up failed");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
 
   return (
