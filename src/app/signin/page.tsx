@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 const Signin = () => {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,6 +32,7 @@ const Signin = () => {
         const data = await response.json();
         const token = data.token;
         localStorage.setItem("token", token);
+        router.push('/chat');
         console.log("Sign In successful");
       } else {
         console.error("Sign In failed");

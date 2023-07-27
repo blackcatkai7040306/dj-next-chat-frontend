@@ -1,7 +1,10 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation';
+
 
 const Signup = () => {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,7 +18,6 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add your sign-up logic here
     console.log("Username:", username);
     console.log("Password:", password);
 
@@ -32,9 +34,9 @@ const Signup = () => {
         const data = await response.json();
         const token = data.token;
         localStorage.setItem("token", token);
+        router.push('/chat');
         console.log("Sign up successful");
       } else {
-        // API call failed
         console.error("Sign up failed");
       }
     } catch (error) {
