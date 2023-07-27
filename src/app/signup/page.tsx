@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,7 +15,7 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add your login logic here
+    // Add your sign-up logic here
     console.log("Username:", username);
     console.log("Password:", password);
   };
@@ -27,7 +27,7 @@ const Login = () => {
         onSubmit={handleSubmit}
       >
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Login to Chat</h2>
+          <h2 className="text-2xl font-bold mb-4">Sign Up for Chat</h2>
         </div>
         <div className="mb-4">
           <label
@@ -66,19 +66,19 @@ const Login = () => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2"
             type="submit"
           >
-            Sign In
+            Sign Up
           </button>
         </div>
         <div className="text-center mt-4">
           <p className="text-gray-600">
-            If not already registered, please{" "}
+            If already registered, please{" "}
             <a
-              href="/signup"
+              href="/signin"
               className="text-blue-500 underline hover:text-blue-700"
             >
-              Sign Up
+              Sign In
             </a>{" "}
-            to create an account.
+            to access your account.
           </p>
         </div>
       </form>
@@ -86,4 +86,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
