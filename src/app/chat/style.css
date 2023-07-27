@@ -1,0 +1,110 @@
+/* styles/global.css */
+
+.chat-app {
+  display: flex;
+  height: 100vh;
+}
+
+.user-list {
+  width: 30%;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f5f5f5;
+}
+
+.chat-window {
+  width: 70%;
+  padding: 10px;
+  background-color: #fff;
+  overflow-y: scroll;
+}
+
+.user {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.user:hover {
+  background-color: #ebebeb;
+}
+
+.user.selected {
+  background-color: #ddd;
+}
+
+.message {
+  margin-bottom: 10px;
+}
+
+.message .message-content {
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.message.User1 .message-content {
+  background-color: #aaf;
+  color: #fff;
+}
+
+.message.User2 .message-content {
+  background-color: #faa;
+  color: #fff;
+}
+
+
+
+
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 10px;
+}
+
+.message-container {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.message {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.message.sent {
+  justify-content: flex-end;
+}
+
+.message-content {
+  padding: 10px;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.message.sent .message-content {
+  background-color: #007bff;
+}
+
+.message.received .message-content {
+  background-color: #28a745;
+}
+
+.message-input {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.message-input button {
+  padding: 5px 10px;
+}
