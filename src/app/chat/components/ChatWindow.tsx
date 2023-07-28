@@ -1,17 +1,26 @@
-import React, { useState, useRef, useEffect, ChangeEvent, KeyboardEvent } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  ChangeEvent,
+  KeyboardEvent,
+} from "react";
 
 interface Message {
   sender: string;
+  receiver: string;
   content: string;
 }
 
 interface ChatWindowProps {
   messages: Message[];
+  userId: number;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ messages, userId }) => {
+  console.log(messages)
   const [newMessage, setNewMessage] = useState("");
-  const [chatMessages, setChatMessages] = useState<Message[]>(messages);
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const chatWindowRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -22,10 +31,30 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
     if (newMessage.trim() !== "") {
       const updatedMessages = [
         ...chatMessages,
-        { sender: "User 1", content: newMessage },
+        { sender: localStorage.getItem("username"), content: newMessage },
       ];
       setNewMessage("");
       setChatMessages(updatedMessages);
+
+      // Send POST request to the API
+      fetch("http://localhost:8000/v1/chat/messages/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({
+          message: newMessage,
+          receiver: userId,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Message sent successfully:", data);
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
     }
   };
 
@@ -34,6 +63,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
       handleSendMessage();
     }
   };
+
+  useEffect(() => {
+    setChatMessages(messages);
+  }, [messages]);
 
   useEffect(() => {
     if (chatWindowRef.current) {
@@ -47,7 +80,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages }) => {
         {chatMessages.map((message, index) => (
           <div
             key={index}
-            className={`message ${message.sender === "User 1" ? "sent" : "received"}`}
+            className={`message ${
+              message.sender === localStorage.getItem("username")
+                ? "sent"
+                : "received"
+            }`}
           >
             <div className="message-content">{message.content}</div>
           </div>

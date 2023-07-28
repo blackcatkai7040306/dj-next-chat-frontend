@@ -32,6 +32,7 @@ const Signin = () => {
         const data = await response.json();
         const token = data.token;
         localStorage.setItem("token", token);
+        localStorage.setItem("username", username);
         router.push('/chat');
         console.log("Sign In successful");
       } else {

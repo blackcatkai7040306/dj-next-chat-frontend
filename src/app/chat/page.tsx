@@ -1,32 +1,64 @@
 "use client";
-import React, { useState } from 'react';
-import UserList from './components/UserList';
-import ChatWindow from './components/ChatWindow';
-import './style.css';
+import React, { useState, useEffect } from "react";
+import UserList from "./components/UserList";
+import ChatWindow from "./components/ChatWindow";
+import "./style.css";
 
 interface User {
   id: number;
   name: string;
 }
 
-const users: User[] = [
-  { id: 1, name: 'User 1' },
-  { id: 2, name: 'User 2' },
-];
-
 interface Message {
   sender: string;
   content: string;
 }
 
-const initialMessages: Message[] = [
-  { sender: 'User 1', content: 'Hello!' },
-  { sender: 'User 2', content: 'Hi!' },
-];
-
 const HomePage: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [users, setUsers] = useState<User[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/v1/chat/conversations/", {
+      headers: {
+        Authorization: `Token ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const newUsers = data.results.map((user: any) => ({
+          id: user?.receiver_details?.id,
+          name: user?.receiver_details?.username,
+        }));
+        setUsers(newUsers);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (selectedUser) {
+      fetch(`http://localhost:8000/v1/chat/messages/${selectedUser.id}`, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const transformedData = data.results.map((message: any) => ({
+            sender: message?.sender_details?.username,
+            content: message?.message,
+            receiver: message?.receiver_details?.username,
+          }));
+          setMessages(transformedData);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [selectedUser]);
 
   const handleUserSelect = (user: User) => {
     setSelectedUser(user);
@@ -35,8 +67,12 @@ const HomePage: React.FC = () => {
   return (
     <div className="chat-app">
       {/* <h1 className="app-title">Chat Application</h1> */}
-      <UserList users={users} onUserSelect={handleUserSelect} selectedUser={selectedUser} />
-      <ChatWindow messages={messages} />
+      <UserList
+        users={users}
+        onUserSelect={handleUserSelect}
+        selectedUser={selectedUser}
+      />
+      <ChatWindow messages={messages} userId={selectedUser?.id} />
     </div>
   );
 };
