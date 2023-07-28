@@ -19,3 +19,4 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - [ ] Make the UI responsive
 - [ ] Add infinite scrolling
 - [ ] Make the UI look better
+- [ ] Saperate the API calls from the components 

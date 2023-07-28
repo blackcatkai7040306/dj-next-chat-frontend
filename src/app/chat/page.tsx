@@ -20,9 +20,11 @@ const HomePage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   let socket: WebSocket;
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
 
   useEffect(() => {
-    fetch("http://localhost:8000/v1/chat/conversations/", {
+    fetch(`${apiUrl}/chat/conversations/`, {
       headers: {
         Authorization: `Token ${localStorage.getItem("token")}`,
       },
@@ -42,7 +44,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (selectedUser) {
-      fetch(`http://localhost:8000/v1/chat/messages/${selectedUser.id}`, {
+      fetch(`${apiUrl}/chat/messages/${selectedUser.id}`, {
         headers: {
           Authorization: `Token ${localStorage.getItem("token")}`,
         },
@@ -71,19 +73,19 @@ const HomePage: React.FC = () => {
     setSelectedUser(user);
   };
 
-    useEffect(() => {
-      socket = new WebSocket("ws://localhost:8000/ws/"); 
+  useEffect(() => {
+    socket = new WebSocket(`${socketUrl}/ws/`);
 
-      socket.addEventListener("open", () => {
-        console.log("WebSocket connection established");
-      });
+    socket.addEventListener("open", () => {
+      console.log("WebSocket connection established");
+    });
 
-      socket.addEventListener("message", handleIncomingMessage);
+    socket.addEventListener("message", handleIncomingMessage);
 
-      return () => {
-        socket.close();
-      };
-    }, []);
+    return () => {
+      socket.close();
+    };
+  }, []);
 
   return (
     <div className="chat-app">
@@ -93,7 +95,7 @@ const HomePage: React.FC = () => {
         onUserSelect={handleUserSelect}
         selectedUser={selectedUser}
       />
-      <ChatWindow messages={messages} userId={selectedUser?.id} />
+      <ChatWindow messages={messages} userId={selectedUser?.id ?? 0} />
     </div>
   );
 };

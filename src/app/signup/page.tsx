@@ -7,6 +7,7 @@ const Signup = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -19,7 +20,7 @@ const Signup = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/v1/auth/register/", {
+      const response = await fetch(`${apiUrl}/auth/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

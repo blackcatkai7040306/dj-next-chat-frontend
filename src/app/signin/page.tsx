@@ -6,6 +6,7 @@ const Signin = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -18,7 +19,7 @@ const Signin = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8000/v1/auth/login/", {
+      const response = await fetch(`${apiUrl}/v1/auth/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

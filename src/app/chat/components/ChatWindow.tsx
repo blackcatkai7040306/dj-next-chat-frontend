@@ -21,6 +21,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, userId }) => {
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const chatWindowRef = useRef<HTMLDivElement>(null);
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewMessage(event.target.value);
@@ -36,7 +37,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, userId }) => {
       setChatMessages(updatedMessages);
 
       // Send POST request to the API
-      fetch("http://localhost:8000/v1/chat/messages/", {
+      fetch(`${apiUrl}/v1/chat/messages/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -98,6 +99,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ messages, userId }) => {
           placeholder="Type your message..."
         />
         <button onClick={handleSendMessage}>Send</button>
+      </div>
+      {/* Highlighted box */}
+      <div style={{ border: "1px solid red", marginTop: "10px" }}>
+        {/* Content of the highlighted box */}
       </div>
     </div>
   );
