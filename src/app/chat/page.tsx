@@ -11,6 +11,7 @@ interface User {
 
 interface Message {
   sender: string;
+  receiver: string;
   content: string;
 }
 
@@ -18,6 +19,7 @@ const HomePage: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+  let socket: WebSocket;
 
   useEffect(() => {
     fetch("http://localhost:8000/v1/chat/conversations/", {
@@ -60,9 +62,28 @@ const HomePage: React.FC = () => {
     }
   }, [selectedUser]);
 
+  const handleIncomingMessage = (event: MessageEvent) => {
+    const message = JSON.parse(event.data);
+    setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
   const handleUserSelect = (user: User) => {
     setSelectedUser(user);
   };
+
+    useEffect(() => {
+      socket = new WebSocket("ws://localhost:8000/ws/"); 
+
+      socket.addEventListener("open", () => {
+        console.log("WebSocket connection established");
+      });
+
+      socket.addEventListener("message", handleIncomingMessage);
+
+      return () => {
+        socket.close();
+      };
+    }, []);
 
   return (
     <div className="chat-app">

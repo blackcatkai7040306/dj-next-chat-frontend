@@ -17,8 +17,6 @@ const Signin = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Username:", username);
-    console.log("Password:", password);
     try {
       const response = await fetch("http://localhost:8000/v1/auth/login/", {
         method: "POST",
@@ -34,7 +32,6 @@ const Signin = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
         router.push('/chat');
-        console.log("Sign In successful");
       } else {
         console.error("Sign In failed");
       }

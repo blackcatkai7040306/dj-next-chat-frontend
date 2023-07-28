@@ -18,9 +18,6 @@ const Signup = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Username:", username);
-    console.log("Password:", password);
-
     try {
       const response = await fetch("http://localhost:8000/v1/auth/register/", {
         method: "POST",
@@ -36,7 +33,6 @@ const Signup = () => {
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
         router.push('/chat');
-        console.log("Sign up successful");
       } else {
         console.error("Sign up failed");
       }

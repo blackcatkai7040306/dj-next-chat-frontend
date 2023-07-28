@@ -18,7 +18,6 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ messages, userId }) => {
-  console.log(messages)
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const chatWindowRef = useRef<HTMLDivElement>(null);
