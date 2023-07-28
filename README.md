@@ -17,6 +17,15 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Todo
 - [ ] Make the UI responsive
-- [ ] Add infinite scrolling
+- [ ] Add endless scrolling for messages
 - [ ] Make the UI look better
-- [ ] Saperate the API calls from the components 
+- [ ] Refactor code to make it modular
+
+## Screenshots
+### Login Screen
+
+   ![Login](screenshots/login.png)
+
+### Chat Screen
+
+   ![Chat](screenshots/chat.png)
